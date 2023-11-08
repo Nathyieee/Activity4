@@ -6,7 +6,7 @@ CREATE TABLE owners(
 	olastname VARCHAR(50) NOT NULL,
 	address VARCHAR(15) NOT NULL,
 	email VARCHAR(100) NOT NULL,
-    phone VARCHAR(15) NOT NULL
+    phone VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE animals(
@@ -161,6 +161,18 @@ FROM animals;
 
 SELECT SUM(totalamount) AS total_sales
 FROM invoices;
+
+SELECT COUNT(*) AS total_appointments
+FROM appointments
+WHERE animalid IN (
+    SELECT animalid
+    FROM animals
+    WHERE ownerid = (
+        SELECT ownerid
+        FROM owners
+        WHERE ofirstname = 'Maria'
+    )
+);
 
 
 
