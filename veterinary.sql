@@ -162,14 +162,17 @@ FROM animals;
 SELECT SUM(totalamount) AS total_sales
 FROM invoices;
 
-SELECT owners.ofirstname AS "OwnerOfCat", count(appointments.animalid) AS "Total Appointments"
-FROM animals
-INNER JOIN owners
-ON animals.ownerid = owners.ownerid
-INNER JOIN appointments
-ON animals.animalid = appointments.animalid
-WHERE owners.ofirstname = 'Maria'
-GROUP BY owners.ofirstname;
+SELECT COUNT(*) AS total_appointments
+FROM appointments
+WHERE animalid IN (
+    SELECT animalid
+    FROM animals
+    WHERE ownerid = (
+        SELECT ownerid
+        FROM owners
+        WHERE ofirstname = 'Maria'
+    )
+);
 
 SELECT a.animalid, a.name, COUNT(*) AS appointment_count
 FROM animals a
